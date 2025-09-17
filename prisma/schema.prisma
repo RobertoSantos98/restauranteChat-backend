@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id    Int   @id @default(autoincrement())
+  nome  String
+  email String @unique
+  senha String
+  interacoes  Interacoes[]
+}
+
+model Cardapio {
+  id          Int   @id @default(autoincrement())
+  nome        String
+  interacoes  Interacoes[]
+  pratos      Prato[]
+  data        DateTime  @default(now())
+}
+
+model Interacoes {
+  id          Int   @id @default(autoincrement())
+
+  idUsuario   Int
+  usuario     Usuario @relation(fields: [idUsuario], references: [id])
+
+  cardapioId  Int
+  cardapio    Cardapio @relation(fields: [cardapioId], references: [id]) 
+
+  descricao   String?
+  data        DateTime @default(now())
+}
+
+model Prato {
+  id         Int    @id @default(autoincrement())
+  nome       String
+  descricao  String
+  valor      Float
+  ingredientes  PratoIngredientes[]
+
+  idCardapio  Int
+  cardapio    Cardapio @relation(fields: [idCardapio], references: [id])
+
+  itensPedido ItemPedido[]
+}
+
+model Ingrediente {
+  id        Int   @id @default(autoincrement())
+  nome      String
+  pratos    PratoIngredientes[]
+}
+
+model PratoIngredientes {
+  pratoId       Int
+  ingredienteId Int
+
+  prato         Prato       @relation(fields: [pratoId], references: [id])
+  ingrediente   Ingrediente @relation(fields: [ingredienteId], references: [id])
+
+  @@id([pratoId, ingredienteId]) // PK composta
+}
+
+model Cliente {
+  id              Int   @id  @default(autoincrement())
+  numeroTelefone  String  @unique
+  nome            String
+  pedidos         Pedido[]
+}
+
+model Pedido {
+  id        Int @id @default(autoincrement())
+
+  clienteId Int
+  cliente   Cliente @relation(fields: [clienteId], references: [id])
+
+  data      DateTime  @default(now())
+  opcional  String? 
+  itens     ItemPedido[]
+}
+
+model ItemPedido {
+  id          Int @id @default(autoincrement())
+  quantidade  Int
+  
+  pratoId     Int
+  prato       Prato @relation(fields: [pratoId], references: [id])
+
+  pedidoId    Int
+  pedido      Pedido  @relation(fields: [pedidoId], references: [id])
+}
