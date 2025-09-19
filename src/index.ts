@@ -4,6 +4,7 @@ import cors from 'cors';
 import usuarioRoutes from "./rotas/UsuarioRotas"
 import cardapioRotas from "./rotas/CardapioRotas"
 import pratoRoute from "./rotas/PratoRotas"
+import interacoesRoute from "./rotas/interacoesRotas"
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 app.use("/usuario", usuarioRoutes);
 app.use("/cardapio", cardapioRotas);
 app.use("/prato", pratoRoute);
+app.use("/interacoes", interacoesRoute);
 
 const PORT = 3000;
 app.listen(PORT, () => {

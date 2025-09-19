@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export class CardapioRepository {
 
-    async criarCardapio(data: { nome: string }) {
+    async criarCardapio(data: { nome: string}) {
         return await prisma.cardapio.create({ data });
     }
 

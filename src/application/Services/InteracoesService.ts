@@ -25,7 +25,9 @@ export class interacoesService {
 
         const descricao = interacaoRulesMap[data.motivo].criacao(usuario?.nome!, cardapio?.nome!);
 
-        return await this.repository.adicionarInteracao({idUsuario: data.idUsuario, cardapioId: data.cardapioId, descricao: descricao});
+        await this.repository.adicionarInteracao({idUsuario: data.idUsuario, cardapioId: data.cardapioId, descricao: descricao});
+
+        return
     }
 
     async buscarInteracoesUsuario(id: number) {

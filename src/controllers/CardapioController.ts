@@ -5,11 +5,21 @@ export class CardapioController{
     private service = new CardapioService();
 
     async criarCardapio(req: Request, res: Response){
-        await this.service.criarCardapio(req.body);
+        try {
+            await this.service.criarCardapio(req.body);
+            res.status(204).json("Criado");
+        } catch (error) {
+            res.status(400).json("Não foi possivel criar: "+ error);
+        }
     }
 
     async listarTodos(req: Request, res: Response){
-        await this.service.buscarTodos();
+        try {
+            const listagem = await this.service.buscarTodos();
+            res.status(200).json(listagem);
+        } catch (error) {
+            res.status(400).json("Não foi possivel listar: "+ error);
+        }
     }
 
     async buscarPorId(req: Request, res: Response){

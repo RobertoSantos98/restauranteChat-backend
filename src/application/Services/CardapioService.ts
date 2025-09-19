@@ -7,11 +7,11 @@ export class CardapioService {
     private repository = new CardapioRepository();
     private interacoesService = new interacoesService()
 
-    async criarCardapio(data: { nome: string }, idUsuario: number) {
-        const criado = await this.repository.criarCardapio(data);
+    async criarCardapio(data: { nome: string, idUsuario: number }) {
+        const criado = await this.repository.criarCardapio({ nome: data.nome});
 
         if(criado){
-        await this.interacoesService.adicionarInteracao({idUsuario: idUsuario, cardapioId: criado.id, motivo: MotivoInteracao.CRIACAO})
+        await this.interacoesService.adicionarInteracao({idUsuario: data.idUsuario, cardapioId: criado.id, motivo: MotivoInteracao.CRIACAO})
         }
 
         return criado
