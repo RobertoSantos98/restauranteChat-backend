@@ -15,9 +15,11 @@ export class InteracoesController {
 
     async buscarInteracaoUsuario(req: Request, res: Response) {
         try {
-            return res.status(200).json(await this.service.buscarInteracoesUsuario(Number(req.params)));
+            const { id } = req.params;
+            const lista = await this.service.buscarInteracoesUsuario(Number(id))
+            return res.status(200).json(lista);
         } catch (error) {
-            return res.status(400).json("Não foi possível buscar as interações");
+            return res.status(404).json("Não foi encontrada nenhuma interação: " + error);
         }
     }
 

@@ -31,7 +31,9 @@ export class interacoesService {
     }
 
     async buscarInteracoesUsuario(id: number) {
-        return await this.repository.buscarInteracoesUsuario(id);
+        const lista = await this.repository.buscarInteracoesUsuario(id);
+        if (!lista || lista.length === 0 ) throw new Error("Nada encontrado");
+        return lista;
     }
 
     async buscarTodasInteracoes() {

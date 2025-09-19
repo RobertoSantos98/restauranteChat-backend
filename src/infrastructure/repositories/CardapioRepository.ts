@@ -9,7 +9,7 @@ export class CardapioRepository {
     }
 
     async buscarTodos(){
-        return await prisma.cardapio.findMany();
+        return await prisma.cardapio.findMany({include: {pratos: true}});
     }
 
     async buscarPorData(data: Date){
@@ -17,7 +17,7 @@ export class CardapioRepository {
     }
 
     async buscarCardapio(id: number) {
-        return await prisma.cardapio.findUnique({ where: { id } });
+        return await prisma.cardapio.findUnique({ where: { id }, include: {pratos: true} });
     }
 
     async atualizarCardapio(id: number, data: Partial<{ nome: string }>) {
