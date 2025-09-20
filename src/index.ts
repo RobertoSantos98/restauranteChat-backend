@@ -6,6 +6,8 @@ import cardapioRotas from "./rotas/CardapioRotas"
 import pratoRoute from "./rotas/PratoRotas"
 import interacoesRoute from "./rotas/interacoesRotas"
 import ClienteRoute from "./rotas/ClienteRotas"
+import PedidoRoute from "./rotas/PedidoRotas"
+import ItemPedido from "./rotas/ItemPedidoRotas"
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use("/cardapio", cardapioRotas);
 app.use("/prato", pratoRoute);
 app.use("/interacoes", interacoesRoute);
 app.use("/cliente", ClienteRoute);
+app.use("/pedido", PedidoRoute);
+app.use("/itempedido", ItemPedido);
 
 const PORT = 3000;
 app.listen(PORT, () => {
