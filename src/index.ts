@@ -10,10 +10,7 @@ import PedidoRoute from "./rotas/PedidoRotas"
 import ItemPedido from "./rotas/ItemPedidoRotas"
 import IngredienteRoutes from "./rotas/IngredientesRotas";
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
+import { httpServer, app } from "./infrastructure/websocket/SocketIOServer";
 
 app.get("/", (req, res) => {
   res.send("Servidor Funcionando Corretamente");
@@ -28,8 +25,6 @@ app.use("/pedido", PedidoRoute);
 app.use("/itempedido", ItemPedido);
 app.use("/ingrediente", IngredienteRoutes);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+
+httpServer.listen(3000, () => console.log("WebSocket Server rodando na porta 3000"));
 

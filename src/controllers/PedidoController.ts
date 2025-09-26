@@ -1,13 +1,17 @@
 import { Request, Response } from "express";
 import { PedidoService } from "../application/Services/PedidoService";
+import { PedidoEventPublisher } from "../application/events/PedidoEventPublisher";
+import { io } from "../infrastructure/websocket/SocketIOServer";
+
+const eventPublisher = new PedidoEventPublisher(io);
 
 export class PedidoController{
-    private service = new PedidoService();
+    private service = new PedidoService(eventPublisher);
 
     async criarPedido(req: Request, res: Response){
         try {
-            await this.service.criarPedido(req.body);
-            res.status(204).json("Criado com sucesso");
+            const criado = await this.service.criarPedido(req.body);
+            res.status(201).json(criado);
         } catch (error) {
             res.status(400).json("Não foi possivel criar o pedido: " + error);
         }
@@ -45,8 +49,8 @@ export class PedidoController{
     async atualizarPedido(req: Request, res: Response){
         try {
             const { id }= req.params;
-            await this.service.atualizarPedido(Number(id), req.body);
-            res.status(200).json("Atualizado com sucesso!");
+            const atualizado = await this.service.atualizarPedido(Number(id), req.body);
+            res.status(200).json(atualizado);
         } catch (error) {
             res.status(400).json("Algo deu errado: " + error)
         }

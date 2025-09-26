@@ -25,7 +25,7 @@ model Usuario {
 model Cardapio {
   id          Int   @id @default(autoincrement())
   nome        String
-  interacoes? Interacoes[]
+  interacoes  Interacoes[]
   pratos      Prato[]
   data        DateTime  @default(now())
 }
@@ -79,6 +79,14 @@ model Cliente {
   pedidos         Pedido[]
 }
 
+enum StatusPedido{
+  PENDENTE
+  EM_PREPARACAO
+  SAIU_ENTREGAR
+  ENTREGUE
+  CANCELADO
+}
+
 model Pedido {
   id        Int @id @default(autoincrement())
 
@@ -86,7 +94,8 @@ model Pedido {
   cliente   Cliente @relation(fields: [clienteId], references: [id])
 
   data      DateTime  @default(now())
-  opcional  String? 
+  opcional  String?
+  status    StatusPedido @default(PENDENTE)
   itens     ItemPedido[]
 }
 
