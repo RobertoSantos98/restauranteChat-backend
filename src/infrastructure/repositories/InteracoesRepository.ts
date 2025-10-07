@@ -9,10 +9,10 @@ export class InteracoesRepository {
     }
 
     async buscarInteracoesUsuario(idUsuario: number) {
-        return await prisma.interacoes.findMany({ where: { idUsuario } })
+        return await prisma.interacoes.findMany({ where: { idUsuario }, include: { usuario: true, cardapio: true } });
     }
 
     async buscarTodasInteracoes() {
-        return await prisma.interacoes.findMany();
+        return await prisma.interacoes.findMany({ include: { usuario: true, cardapio: true } });
     }
 }

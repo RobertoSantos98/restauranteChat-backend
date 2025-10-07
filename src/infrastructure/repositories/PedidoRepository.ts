@@ -32,16 +32,42 @@ export class PedidoRepository {
         });
     }
 
-    async listarTodosPedidos() {
-        return await prisma.pedido.findMany({ include: { itens: true, cliente: true } });
-    }
+async listarPedidosPaginados(page: number, limit: number) {
+  const skip = (page - 1) * limit;
+
+  const [pedidos, total] = await Promise.all([
+    prisma.pedido.findMany({
+      skip,
+      take: limit,
+      include: {
+        cliente: true,
+        itens: {
+          include: {
+            prato: true,
+          },
+        },
+      },
+      orderBy: {
+        data: "desc",
+      },
+    }),
+    prisma.pedido.count(),
+  ]);
+
+  return {
+    data: pedidos,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
+}
 
     async listarPorIdPedido(id: number) {
-        return await prisma.pedido.findUnique({ where: { id }, include: { itens: true, cliente: true } })
+        return await prisma.pedido.findUnique({ where: { id }, include: { cliente: true, itens: { include: {prato: true}} } })
     }
 
     async listarPorUsuario(id: number) {
-        return await prisma.pedido.findMany({ where: { id }, include: { itens: true, cliente: true } })
+        return await prisma.pedido.findMany({ where: { id }, include: { cliente: true, itens: { include: {prato: true}} } })
     }
 
     async atualizarPedido(id: number, data: Partial<{ clienteId: number, optional: string | null, status: StatusPedido }>) {

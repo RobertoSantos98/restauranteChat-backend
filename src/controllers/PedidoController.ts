@@ -19,7 +19,9 @@ export class PedidoController{
 
     async buscarTodos(req: Request, res: Response){
         try {
-            const lista = await this.service.listarTodos();
+            const { page } = req.params;
+            const { limit } = req.params;
+            const lista = await this.service.listarTodos(Number(page), Number(limit));
             res.status(200).json(lista);
         } catch (error) {
             res.status(400).json("Algo deu errado: " + error)

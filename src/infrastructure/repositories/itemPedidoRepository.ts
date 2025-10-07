@@ -11,6 +11,14 @@ export class ItemPedidoRepository {
         await prisma.itemPedido.update({ where: { id }, data })
     }
 
+    async buscarItens(){
+        await prisma.itemPedido.findMany({include: { pedido: true, prato: true}});
+    }
+
+    async buscarItens(id: number){
+        await prisma.itemPedido.findUnique({where: { id },include: { pedido: true, prato: true}});
+    }
+
     async deletarItemPedido(id: number) {
         await prisma.itemPedido.delete({ where: { id } })
     }

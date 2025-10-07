@@ -14,8 +14,8 @@ export class PedidoService {
         return salvo;
     }
 
-    async listarTodos() {
-        return await this.repository.listarTodosPedidos();
+    async listarTodos(page: number, limit: number) {
+        return await this.repository.listarPedidosPaginados(page, limit);
     }
 
     async buscarPedidoId(id: number) {
