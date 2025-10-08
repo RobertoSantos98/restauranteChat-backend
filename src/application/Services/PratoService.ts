@@ -15,8 +15,8 @@ export class PratoService {
         return criado;
     }
 
-    async listarTodos() {
-        return await this.repository.buscarTodos();
+    async listarTodos(page: number, limit:number) {
+        return await this.repository.buscarTodos(page, limit);
     }
 
     async buscarPorId(id: number) {

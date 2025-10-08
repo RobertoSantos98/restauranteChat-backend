@@ -8,8 +8,25 @@ export class PratoRepository {
         return await prisma.prato.create({ data });
     }
 
-    async buscarTodos() {
-        return await prisma.prato.findMany();
+    async buscarTodos(page:number, limit: number) {
+        const skip = (page - 1) * limit;
+
+        const [pratos, total ] = await Promise.all([
+            prisma.prato.findMany({
+                skip,
+                take: limit,
+                include: { cardapio: true },
+                orderBy: { id: "desc"}
+            }),
+            prisma.prato.count()
+        ])
+
+        return {
+            data: pratos,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+        }
     }
 
     async buscarPorId(id: number) {

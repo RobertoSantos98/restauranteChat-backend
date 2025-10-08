@@ -15,8 +15,10 @@ export class PratoController {
     }
 
     async listarTodos(req: Request, res: Response) {
+        const { page } = req.params;
+        const { limit } = req.params;
         try {
-            const listagem = await this.service.listarTodos();
+            const listagem = await this.service.listarTodos(Number(page), Number(limit));
             res.status(200).json(listagem);
         } catch (error) {
             res.status(400).json("Não foi possível listar todos os Pratos no momento: " + error);
