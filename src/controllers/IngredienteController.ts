@@ -9,7 +9,7 @@ export class IngredienteController {
         res.status(204).json("Criado");
     }
 
-    async buscarTodos(res: Response){
+    async buscarTodos(req: Request, res: Response){
         const lista = await this.service.buscarTodosIgredientes();
         res.status(200).json(lista);
     }

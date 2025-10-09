@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export class IngredientesRepository {
 
-    async criarIngredientes(data: { nome: string }) {
+    async criarIngredientes(data: { nome: string, quantidade: number }) {
         return await prisma.ingrediente.create({ data });
     }
 

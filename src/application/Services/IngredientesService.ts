@@ -3,7 +3,7 @@ import { IngredientesRepository } from "../../infrastructure/repositories/Ingred
 export class IngredientesService {
     private repository = new IngredientesRepository()
 
-    async criarIngrediente(data: {nome: string}){
+    async criarIngrediente(data: {nome: string, quantidade: number}){
         try {
             await this.repository.criarIngredientes(data);
             return

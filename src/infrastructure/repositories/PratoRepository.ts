@@ -15,7 +15,7 @@ export class PratoRepository {
             prisma.prato.findMany({
                 skip,
                 take: limit,
-                include: { cardapio: true },
+                include: { ingredientes: true },
                 orderBy: { id: "desc"}
             }),
             prisma.prato.count()
@@ -30,7 +30,7 @@ export class PratoRepository {
     }
 
     async buscarPorId(id: number) {
-        return await prisma.prato.findUnique({ where: { id } })
+        return await prisma.prato.findUnique({ where: { id }, include: {cardapio: true} })
     }
 
     async atualizarPrato(id: number, data: Partial<{ nome: string, descricao: string, valor: number, idCardapio: number }>) {

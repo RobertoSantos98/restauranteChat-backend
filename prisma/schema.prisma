@@ -57,9 +57,10 @@ model Prato {
 }
 
 model Ingrediente {
-  id        Int   @id @default(autoincrement())
-  nome      String
-  pratos    PratoIngredientes[]
+  id          Int   @id @default(autoincrement())
+  nome        String
+  quantidade  Float
+  pratos      PratoIngredientes[]
 }
 
 model PratoIngredientes {
