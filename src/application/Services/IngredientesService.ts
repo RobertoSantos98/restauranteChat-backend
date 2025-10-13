@@ -5,8 +5,7 @@ export class IngredientesService {
 
     async criarIngrediente(data: {nome: string, quantidade: number}){
         try {
-            await this.repository.criarIngredientes(data);
-            return
+            return await this.repository.criarIngredientes(data);
         } catch (error) {
             throw new Error("Não foi possível salvar o Ingrediente!: " + error)
         }
@@ -18,8 +17,17 @@ export class IngredientesService {
             if (lista.length === 0) {
                 throw new Error("Não foi encontrado nenhum Item.");
             }
+            return lista;
         } catch (error) {
             throw new Error("Algo deu errado: " + error);
+        }
+    }
+
+    async buscarTodosPaginado(page: number, limit: number){
+        try {
+            return await this.repository.buscarTodosPaginados(page, limit);
+        } catch (error) {
+            throw new Error("Algo deu errado: " + error)
         }
     }
 
@@ -29,6 +37,7 @@ export class IngredientesService {
             if (lista.length === 0) {
                 throw new Error("Não foi encontrado nenhum Item.");
             }
+            return lista
         } catch (error) {
             throw new Error("Algo deu errado: " + error);
         }
@@ -40,6 +49,7 @@ export class IngredientesService {
             if (!encontrado) {
                 throw new Error("Não foi encontrado nenhum Item.");
             }
+            return encontrado;
         } catch (error) {
             throw new Error("Algo deu errado: " + error);
         }

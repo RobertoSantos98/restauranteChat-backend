@@ -10,6 +10,12 @@ export enum StatusPedido {
     CANCELADO = "CANCELADO"
 }
 
+export type FiltroPedido ={
+  id?: number,
+  cliente?: string,
+  data?: string
+}
+
 export class PedidoRepository {
 
     async criarPedido(data: {
@@ -76,6 +82,40 @@ async listarPedidosPaginados(page: number, limit: number) {
 
     async deletarPedido(id: number) {
         return await prisma.pedido.delete({ where: { id } })
+    }
+
+    async buscaPersonalizada(filtro: FiltroPedido){
+      const where: any = {};
+
+      if (filtro.id) {
+        where.id = filtro.id
+      }
+
+      if(filtro.cliente){
+        where.cliente = {
+          contains: filtro.cliente, 
+          mode: "insensitive"
+        };
+      }
+
+      if(filtro.data){
+        const start = new Date(filtro.data);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(filtro.data);
+        end.setHours(23, 59, 59, 999);
+        where.data = { gte: start, lte: end};
+      }
+      
+      console.log("WHERE gerado:", where);
+
+      if(Object.keys(where).length === 0){
+        return []
+      }
+
+      return await prisma.pedido.findMany({
+        where,
+        orderBy: { id: "desc"}
+      })
     }
 
 }

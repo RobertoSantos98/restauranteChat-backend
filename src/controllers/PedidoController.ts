@@ -67,4 +67,21 @@ export class PedidoController{
             res.status(400).json("Algo deu errado: " + error);
         }
     }
+
+    async buscaPersonalizada(req: Request, res: Response){
+        try {
+            const {id, cliente, data} = req.query;
+
+            const filtro = {
+                id: id? Number(id) : undefined,
+                cliente: cliente? String(cliente): undefined,
+                data: data ? String(data): undefined
+            };
+
+            const pedidos = await this.service.buscaPersonalizada(filtro);
+            return res.status(200).json(pedidos);
+        } catch (error) {
+            return res.status(500).json({ error });
+        }
+    }
 }

@@ -14,6 +14,13 @@ export class IngredienteController {
         res.status(200).json(lista);
     }
 
+    async buscarTodosPaginado(req: Request, res:Response){
+        const { page } = req.params;
+        const { limit } = req.params;
+        const lista = await this.service.buscarTodosPaginado(Number(page), Number(limit));
+        res.status(200).json(lista);
+    }
+
     async buscarPorNome(req: Request, res: Response){
         const { nome } = req.params
         const lista = await this.service.buscarPorNome(nome);

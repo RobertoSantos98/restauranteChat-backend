@@ -1,4 +1,4 @@
-import { PedidoRepository, StatusPedido, transicoesValidas } from "../../infrastructure/repositories/PedidoRepository";
+import { FiltroPedido, PedidoRepository, StatusPedido, transicoesValidas } from "../../infrastructure/repositories/PedidoRepository";
 import { IPedidoEventPublisher } from "../events/IPedidoEventPublisher";
 
 export class PedidoService {
@@ -56,5 +56,9 @@ export class PedidoService {
 
     async deletarPedido(id: number) {
         return await this.repository.deletarPedido(id)
+    }
+
+    async buscaPersonalizada(filtro: FiltroPedido){
+        return await this.repository.buscaPersonalizada(filtro);
     }
 }
