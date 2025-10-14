@@ -58,7 +58,7 @@ export class PedidoService {
         return await this.repository.deletarPedido(id)
     }
 
-    async buscaPersonalizada(filtro: FiltroPedido){
-        return await this.repository.buscaPersonalizada(filtro);
+    async buscaPersonalizada(filtro: FiltroPedido, page: number, limit: number){
+        return await this.repository.buscaPersonalizada(filtro, page, limit);
     }
 }

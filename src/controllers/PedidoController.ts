@@ -70,7 +70,7 @@ export class PedidoController{
 
     async buscaPersonalizada(req: Request, res: Response){
         try {
-            const {id, cliente, data} = req.query;
+            const {id, cliente, data, page, limit} = req.query;
 
             const filtro = {
                 id: id? Number(id) : undefined,
@@ -78,7 +78,8 @@ export class PedidoController{
                 data: data ? String(data): undefined
             };
 
-            const pedidos = await this.service.buscaPersonalizada(filtro);
+            const pedidos = await this.service.buscaPersonalizada(filtro, Number(page), Number(limit));
+            console.log(pedidos)
             return res.status(200).json(pedidos);
         } catch (error) {
             return res.status(500).json({ error });

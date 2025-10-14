@@ -84,7 +84,7 @@ async listarPedidosPaginados(page: number, limit: number) {
         return await prisma.pedido.delete({ where: { id } })
     }
 
-    async buscaPersonalizada(filtro: FiltroPedido){
+    async buscaPersonalizada(filtro: FiltroPedido, page: number, limit: number){
       const where: any = {};
 
       if (filtro.id) {
@@ -92,10 +92,10 @@ async listarPedidosPaginados(page: number, limit: number) {
       }
 
       if(filtro.cliente){
-        where.cliente = {
+        where.cliente ={ nome: {
           contains: filtro.cliente, 
           mode: "insensitive"
-        };
+        }};
       }
 
       if(filtro.data){
@@ -107,15 +107,31 @@ async listarPedidosPaginados(page: number, limit: number) {
       }
       
       console.log("WHERE gerado:", where);
-
+      
       if(Object.keys(where).length === 0){
         return []
       }
 
-      return await prisma.pedido.findMany({
-        where,
-        orderBy: { id: "desc"}
-      })
+      const skip = (page -1) * limit;
+
+      const [pedidos, total] = await Promise.all([
+        await prisma.pedido.findMany({
+          where,
+          skip,
+          take: limit,
+          include: { cliente: true },
+          orderBy: { id: "desc"}
+        }),
+        prisma.pedido.count({where})
+      ])
+
+      return {
+        data: pedidos,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit)
+      }
+      
     }
 
 }
